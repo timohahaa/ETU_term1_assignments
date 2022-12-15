@@ -24,7 +24,6 @@ int head_i_1, head_j_1, tail_i_1, tail_j_1;
 int head_i_2, head_j_2, tail_i_2, tail_j_2;
 int tail_direction_1, head_direction_1, tail_direction_2, head_direction_2; //1 - вверх, 2 - вниз, 3 - влево, 4 - вправо
 int playfield[SIZE * SIZE] = {0};
-
 //ВНИМАНИЕ! СЕЙЧАС БУДУТ КОСТЫЛИ *****! ГОТОВЫ? ПОЕХАЛИ *****!
 //первая змейка
 //символы для тела: \ / - | @ это повороты, прямые части тела и голова соответственно
@@ -35,6 +34,7 @@ int playfield[SIZE * SIZE] = {0};
 //переменные: head_i_2, head_j_2, head_direction_2 - координаты головы и ее направление
 //tail_i_2, tail_j_2, tail_direction_2 - координаты хвоста и его направление
 //КОСТЫЛИ ЗАКОНЧИЛИСЬ! СПАСИБО ЗА ВНИМАНИЕ!
+
 
 //перевод индекса двумерного массива в индекс одномепного массива
 int _1Dindex(int i, int j) {
@@ -140,6 +140,10 @@ void pause_for_N_seconds(int miliseconds) {
     usleep(miliseconds * 1000);
 }
 void first_screen() {
+    COORD coord;
+    coord.X = 0;
+    coord.Y = 0;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     int pause = 100;
     ConsoleColorGreen();
     system("cls");
@@ -156,7 +160,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -170,7 +174,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -184,7 +188,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -198,7 +202,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -212,7 +216,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -226,7 +230,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -240,7 +244,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -254,7 +258,7 @@ void first_screen() {
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(pause);
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     printf("\n"
            "\n"
            "\n"
@@ -264,7 +268,7 @@ void first_screen() {
            "           // ,·-·.\n"
            "          ((./ /``\\\\\n"
            "           `·-'    ))\n"
-           "                  ((\n"
+           "                   ((\n"
            "                    ``-\n"
            "          Нажмите ENTER");
     pause_for_N_seconds(2000);
@@ -403,9 +407,12 @@ void end_screen(){
 }
 //ввод НЕ ОТРИЦАТЕЛЬНОГО параметра
 void input_param(int* whatIsBeingInput, int upper_bound, int lower_bound, int can_be_zero) {
+    COORD coord;
+    coord.X = 0;
+    coord.Y = 0;
     int key, leave_function = 0;
     color_counter = 1;
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     menu();
     while (leave_function != 1) {
         if (*whatIsBeingInput < upper_bound) {
@@ -413,11 +420,11 @@ void input_param(int* whatIsBeingInput, int upper_bound, int lower_bound, int ca
             if ((key >= 48) && (key <= 57)) {
                 *whatIsBeingInput = *whatIsBeingInput * 10 + (key - 48);
                 if (*whatIsBeingInput > upper_bound) {*whatIsBeingInput /= 10;}
-                system("cls");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 menu();
             } else if (key == BACKSPACE) {
                 *whatIsBeingInput /= 10;
-                system("cls");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 menu();
             } else if (key == ENTER) {
                 if (can_be_zero) {
@@ -428,7 +435,7 @@ void input_param(int* whatIsBeingInput, int upper_bound, int lower_bound, int ca
             key = getch();
             if (key == BACKSPACE) {
                 *whatIsBeingInput /= 10;
-                system("cls");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 menu();
             } else if (key == ENTER) {leave_function = 1; color_counter = 0;}
         }
@@ -442,6 +449,9 @@ void wall_editor_menu(int i_cursor, int j_cursor) {
     printf("\nЧтобы вернуться в главное меню, нажмите TAB.\nЧтобы убрать стенку нажмите BACKSPACE.");
 }
 void wall_editor() {
+    COORD coord;
+    coord.X = 0;
+    coord.Y = 0;
     int i = 1, j = 1;
     wall_editor_menu(i, j);
     int leave_function = 0, key;
@@ -450,25 +460,25 @@ void wall_editor() {
         if (key == UP_ARROW) {
             i--;
             if (i == 0) {i = 1;}
-            system("cls");
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             wall_editor_menu(i, j);
         }
         if (key == DOWN_ARROW) {
             i++;
             if (i == height + 1) {i = height;}
-            system("cls");
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             wall_editor_menu(i, j);
         }
         if (key == LEFT_ARROW) {
             j--;
             if (j == 0) {j = 1;}
-            system("cls");
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             wall_editor_menu(i, j);
         }
         if (key == RIGHT_ARROW) {
             j++;
             if (j == length + 1) {j = length;}
-            system("cls");
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             wall_editor_menu(i, j);
         }
         if (key == TAB) {leave_function = 1;}
@@ -476,7 +486,7 @@ void wall_editor() {
             if ((wall_counter != 5) && playfield[_1Dindex(i,j)] != '#') {
                 playfield[_1Dindex(i,j)] = '#';
                 wall_counter++;
-                system("cls");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 wall_editor_menu(i, j);
             }
         }
@@ -484,7 +494,7 @@ void wall_editor() {
             if (playfield[_1Dindex(i,j)] == '#') {
                 playfield[_1Dindex(i,j)] = ' ';
                 wall_counter--;
-                system("cls");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 wall_editor_menu(i, j);
             }
         }
@@ -689,8 +699,23 @@ void calc_lose_condition(int i, int j, int witch_snake) {
         lose_condition = 3;
     } else {if (witch_snake == 1) {lose_condition = 1;} else {lose_condition = 2;}}
 }
+void print_scores() {
+    printf("Первый игрок: ");
+    ConsoleColorLightBlue();
+    printf("%d", score_1);
+    ConsoleColorWhite();
+    printf(" очков\n");
+    printf("Второй игрок: ");
+    ConsoleColorPink();
+    printf("%d", score_2);
+    ConsoleColorWhite();
+    printf(" очков\n");
+}
 //движение змейки по кадрам
 void move_snake(int new_direction_1, int new_direction_2) {
+    COORD coord;
+    coord.X = 0;
+    coord.Y = 0;
     switch (new_direction_1) { //1 - вверх, 2 - вниз, 3 - влево, 4 - вправо
         case 1: //1 - вверх
             if (new_direction_1 != head_direction_1) {get_head(new_direction_1, 0);} else { playfield[_1Dindex(head_i_1, head_j_1)] = '|';}
@@ -751,9 +776,9 @@ void move_snake(int new_direction_1, int new_direction_2) {
             } else {playfield[_1Dindex(head_i_2, head_j_2)] = '%'; get_tail(&tail_direction_2, &tail_i_2, &tail_j_2);}
             break;
     }
-    system("cls");
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     draw_whole_playfield(length, height, -1, -1);
-    printf("Первый игрок: %d очков\nВторой игрок: %d очков\n", score_1, score_2);
+    print_scores();
 }
 void get_new_direction(int* new_direction_1, int* new_direction_2, int key) {
     switch (key) { //1 - вверх, 2 - вниз, 3 - влево, 4 - вправо
@@ -823,7 +848,7 @@ void gameplay(int head_dir_1, int head_dir_2) {
     int new_direction_2 = head_dir_2;
     int leave_function = 0;
     draw_whole_playfield(length, height, -1, -1);
-    printf("Первый игрок: %d очков\nВторой игрок: %d очков\n", score_1, score_2);
+    print_scores();
     pause_for_N_seconds(1000);
     while (leave_function != 1) {
         //pause_for_N_seconds(250);
